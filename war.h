@@ -2,53 +2,27 @@
 // Created by milena on 22.05.2023.
 //
 
-#ifndef OSI3__WAR_H_
-#define OSI3__WAR_H_
+#ifndef OS3__WAR_H_
+#define OS3__WAR_H_
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
-
-int num_of_guns;
-int field_size;
 
 #define EMPTY_POINT 0
 #define USED_POINT 1
 #define ALIVE_GUN 2
 #define DEAD_GUN 3
-#define FINISH 4
 
 typedef struct {
     int type;
     int target_coordinate;
 } point_t;
 
+int num_of_guns;
+int field_size;
 point_t *own_field = NULL;
 point_t *foreign_field = NULL;
-
-char *get_point_type(int type) {
-    switch (type) {
-        case 0:
-            return "empty";
-        case 1:
-            return "used";
-        case 2:
-            return "alive gun";
-        default:
-            return "dead gun";
-    }
-}
-
-char get_point_char(int type) {
-    switch (type) {
-        case 0:
-            return '*';
-        case 1:
-            return 'x';
-        case 2:
-            return 'G';
-        default:
-            return 'D';
-    }
-}
 
 int check_status() {
     int result = 0;
@@ -60,8 +34,8 @@ int check_status() {
     return result != 0;
 }
 
-void generate_targets(int** shots) {
-    int j = 0;
+int generate_targets(int *shots) {
+    int num_of_shots = 0;
     for (int i = 0; i < field_size * field_size; ++i) {
         if (own_field[i].type == ALIVE_GUN) {
             int num = (int) rand() % (field_size * field_size);
@@ -69,10 +43,12 @@ void generate_targets(int** shots) {
                 num = rand() % (field_size * field_size);
             }
             own_field[i].target_coordinate = num;
-            *shots[j] = num;
-            j++;
+            foreign_field[num].type = USED_POINT;
+            shots[num_of_shots] = num;
+            num_of_shots++;
         }
     }
+    return num_of_shots;
 }
 
 void simple_fill_field(point_t *field) {
@@ -84,14 +60,17 @@ void simple_fill_field(point_t *field) {
 
 void fill_field(point_t *field) {
     simple_fill_field(field);
+    printf("Preparing shoot into: ");
 
     for (int i = 0; i < num_of_guns; ++i) {
-        long num = rand() % (field_size * field_size);// NOLINT(cert-msc50-cpp)
+        int num = rand() % (field_size * field_size);
         while (field[num].type != EMPTY_POINT) {
-            num = rand() % (field_size * field_size);// NOLINT(cert-msc50-cpp)
+            num = rand() % (field_size * field_size);
         }
         field[num].type = ALIVE_GUN;
+        printf("%d ", num);
     }
+    printf("\n");
 }
 
-#endif//OSI3__WAR_H_
+#endif// OS3__WAR_H_

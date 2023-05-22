@@ -1,3 +1,0 @@
-/mnt/c/Clion/osi3/cmake-build-debug/CMakeFiles/osi3.dir
-/mnt/c/Clion/osi3/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Clion/osi3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
