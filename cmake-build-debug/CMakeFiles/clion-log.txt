@@ -1,0 +1,4 @@
+WSL:  Configure Disable profile
+
+Cannot get compiler information:
+	Compiler command timed out: \usr\bin\cc -xc -g -std=gnu11 -fpch-preprocess -v -dD -E
